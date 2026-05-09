@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Page header -->
+  <div class="fade-up" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <div class="mono" style="font-size:9px;letter-spacing:.18em;color:rgba(0,229,160,0.5);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+        <span style="width:14px;height:1px;background:var(--accent);display:inline-block;opacity:.5"></span>
+        ADMIN PANEL
+      </div>
+      <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em">System <span style="color:var(--accent)">Dashboard</span></h1>
+    </div>
+    <div style="display:flex;gap:8px">
+      <a href="/admin/export" class="btn btn-outline">Export Data</a>
+      <a href="/upload" class="btn btn-primary">New Scan</a>
+    </div>
+  </div>
+
+  <!-- Stat strip -->
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.75rem">
+    <div class="glass fade-up" style="padding:16px 18px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:8px">TOTAL USERS</div>
+      <div class="mono" style="font-size:28px;font-weight:500;color:var(--accent)">{{ users|length }}</div>
+    </div>
+    <div class="glass fade-up fade-up-1" style="padding:16px 18px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:8px">IMAGES UPLOADED</div>
+      <div class="mono" style="font-size:28px;font-weight:500;color:var(--blue)">{{ images|length }}</div>
+    </div>
+    <div class="glass fade-up fade-up-2" style="padding:16px 18px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:8px">THREATS</div>
+      <div class="mono" style="font-size:28px;font-weight:500;color:var(--amber)">—</div>
+    </div>
+    <div class="glass fade-up fade-up-3" style="padding:16px 18px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:rgba(255,82,82,.7)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:8px">ACCURACY</div>
+      <div class="mono" style="font-size:28px;font-weight:500;color:var(--text)">99.2%</div>
+    </div>
+  </div>
+
+  <!-- Users table -->
+  <div class="glass fade-up fade-up-2" style="padding:0;overflow:hidden;margin-bottom:1.25rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:8px;background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.2);display:flex;align-items:center;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4.5" r="2.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M1.5 11c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="mono" style="font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--text)">Registered Users</div>
+          <div class="mono" style="font-size:9px;color:var(--text3);letter-spacing:.06em">{{ users|length }} ACCOUNTS</div>
+        </div>
+      </div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed">
+      <thead>
+        <tr>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;width:80px">ID</th>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400">Username</th>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background .15s" onmouseover="this.style.background='rgba(0,229,160,0.03)'" onmouseout="this.style.background='transparent'">
+          <td style="padding:11px 20px;vertical-align:middle">
+            <span class="mono" style="font-size:10px;color:var(--text3);background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:4px">#{{ '%03d'|format(user[0]) }}</span>
+          </td>
+          <td style="padding:11px 20px;vertical-align:middle">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:26px;height:26px;border-radius:50%;background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--accent);flex-shrink:0">
+                {{ user[1][:2]|upper }}
+              </div>
+              <span style="font-weight:500;color:var(--text)">{{ user[1] }}</span>
+            </div>
+          </td>
+          <td style="padding:11px 20px;vertical-align:middle;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ user[2] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)">
+      <span>Showing {{ users|length }} users</span>
+    </div>
+  </div>
+
+  <!-- Images table -->
+  <div class="glass fade-up fade-up-3" style="padding:0;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:8px;background:rgba(68,138,255,0.1);border:1px solid rgba(68,138,255,0.2);display:flex;align-items:center;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="11" rx="2" stroke="var(--blue)" stroke-width="1.2"/><circle cx="4.5" cy="4.5" r="1.2" fill="var(--blue)" opacity=".7"/><path d="M1 9.5l3-2.5 2.5 2 2-1.5 2.5 2" stroke="var(--blue)" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="mono" style="font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--text)">Uploaded Images</div>
+          <div class="mono" style="font-size:9px;color:var(--text3);letter-spacing:.06em">{{ images|length }} TOTAL</div>
+        </div>
+      </div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed">
+      <thead>
+        <tr>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;width:100px">ID</th>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400">Image Name</th>
+          <th style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;padding:9px 20px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;width:180px">Upload Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for img in images %}
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);transition:background .15s" onmouseover="this.style.background='rgba(68,138,255,0.03)'" onmouseout="this.style.background='transparent'">
+          <td style="padding:11px 20px;vertical-align:middle">
+            <span class="mono" style="font-size:10px;color:var(--text3);background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:4px">#{{ '%03d'|format(img[0]) }}</span>
+          </td>
+          <td style="padding:11px 20px;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:26px;height:26px;border-radius:6px;background:rgba(68,138,255,0.1);border:1px solid rgba(68,138,255,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="var(--blue)" stroke-width="1.1"/><circle cx="3.8" cy="4" r="1" fill="var(--blue)" opacity=".7"/><path d="M1 8.5l2.5-2 2 1.8 2-1.5 2.5 2" stroke="var(--blue)" stroke-width="1" stroke-linecap="round"/></svg>
+              </div>
+              <span style="font-weight:500;color:var(--text)">{{ img[1] }}</span>
+            </div>
+          </td>
+          <td style="padding:11px 20px;vertical-align:middle">
+            <span class="mono" style="font-size:11px;color:var(--text2)">{{ img[2] }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)">
+      <span>Showing {{ images|length }} images</span>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

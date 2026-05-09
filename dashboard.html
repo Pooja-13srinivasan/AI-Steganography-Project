@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Page header -->
+  <div class="fade-up" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <div class="mono" style="font-size:9px;letter-spacing:.18em;color:rgba(0,229,160,0.5);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+        <span style="width:14px;height:1px;background:var(--accent);display:inline-block;opacity:.5"></span>
+        OVERVIEW
+      </div>
+      <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em">Scan <span style="color:var(--accent)">Dashboard</span></h1>
+    </div>
+    <a href="/upload" class="btn btn-primary" style="align-self:flex-end">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 2v7M4 5L6.5 2 9 5M2 10h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      New Scan
+    </a>
+  </div>
+
+  <!-- Metric cards -->
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:1.75rem">
+
+    <div class="glass fade-up" style="padding:20px 22px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:12px;text-transform:uppercase">Total Scanned</div>
+      <div class="mono" style="font-size:38px;font-weight:500;line-height:1;color:var(--blue)">{{ total }}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;display:flex;align-items:center;gap:5px">
+        <span style="display:inline-flex;padding:2px 8px;border-radius:4px;background:rgba(68,138,255,.1);color:var(--blue);font-family:var(--mono);font-size:9px">ALL FILES</span>
+      </div>
+    </div>
+
+    <div class="glass fade-up fade-up-1" style="padding:20px 22px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--red)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:12px;text-transform:uppercase">Threats Found</div>
+      <div class="mono" style="font-size:38px;font-weight:500;line-height:1;color:var(--red)">{{ stego }}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px">
+        <span style="display:inline-flex;padding:2px 8px;border-radius:4px;background:rgba(255,82,82,.1);color:var(--red);font-family:var(--mono);font-size:9px">STEGO</span>
+      </div>
+    </div>
+
+    <div class="glass fade-up fade-up-2" style="padding:20px 22px">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)"></div>
+      <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:12px;text-transform:uppercase">Clean Images</div>
+      <div class="mono" style="font-size:38px;font-weight:500;line-height:1;color:var(--accent)">{{ clean }}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px">
+        <span style="display:inline-flex;padding:2px 8px;border-radius:4px;background:rgba(0,229,160,.1);color:var(--accent);font-family:var(--mono);font-size:9px">VERIFIED</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Chart + sidebar -->
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
+
+    <!-- Chart card -->
+    <div class="glass fade-up fade-up-3" style="padding:1.75rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+        <div>
+          <div style="font-size:15px;font-weight:700">Detection Breakdown</div>
+          <div class="mono" style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:.08em">CLEAN VS STEGO — ALL SCANS</div>
+        </div>
+      </div>
+
+      <div style="position:relative;width:100%;height:280px">
+        <canvas id="myChart"></canvas>
+      </div>
+
+      <!-- Legend -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:1.5rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:var(--r-sm);border:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:9px">
+            <div style="width:9px;height:9px;border-radius:2px;background:var(--accent)"></div>
+            <div>
+              <div style="font-size:13px;font-weight:500">Clean</div>
+              <div class="mono" style="font-size:9px;color:var(--text3)" id="leg-clean-pct"></div>
+            </div>
+          </div>
+          <div class="mono" style="font-size:14px;font-weight:500;color:var(--accent)">{{ clean }}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:var(--r-sm);border:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:9px">
+            <div style="width:9px;height:9px;border-radius:2px;background:var(--red)"></div>
+            <div>
+              <div style="font-size:13px;font-weight:500">Stego detected</div>
+              <div class="mono" style="font-size:9px;color:var(--text3)" id="leg-stego-pct"></div>
+            </div>
+          </div>
+          <div class="mono" style="font-size:14px;font-weight:500;color:var(--red)">{{ stego }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+
+      <!-- Ratio bar -->
+      <div class="glass fade-up fade-up-3" style="padding:18px 20px">
+        <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:12px">THREAT RATIO</div>
+        <div style="height:7px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;display:flex;margin-bottom:7px">
+          <div id="rc" style="height:100%;background:var(--accent);transition:width .8s ease"></div>
+          <div id="rs" style="height:100%;background:var(--red);transition:width .8s ease"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px">
+          <span style="color:var(--accent)" id="rc-lbl"></span>
+          <span style="color:var(--red)" id="rs-lbl"></span>
+        </div>
+      </div>
+
+      <!-- Quick stats -->
+      <div class="glass fade-up fade-up-4" style="padding:18px 20px">
+        <div class="mono" style="font-size:9px;letter-spacing:.14em;color:var(--text3);margin-bottom:10px">SESSION INFO</div>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--text2)">Model</span>
+            <span class="mono" style="font-size:11px;color:var(--accent)">StegoNet-7B</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--text2)">Accuracy</span>
+            <span class="mono" style="font-size:11px;color:var(--text)">99.2%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--text2)">Avg time</span>
+            <span class="mono" style="font-size:11px;color:var(--text)">0.8s</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0">
+            <span style="font-size:12px;color:var(--text2)">Threat level</span>
+            <span class="mono" style="font-size:11px;" id="threat-level"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <a href="/upload" class="btn btn-primary fade-up fade-up-4" style="height:46px">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4 5l3-3 3 3M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Scan New Image
+      </a>
+      <a href="/history" class="btn btn-outline fade-up fade-up-4" style="height:46px">View Scan History</a>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const CLEAN = JSON.parse('{{ clean | tojson | safe }}');
+const STEGO = JSON.parse('{{ stego | tojson | safe }}');
+const TOTAL = CLEAN + STEGO;
+const cp = TOTAL > 0 ? Math.round(CLEAN / TOTAL * 100) : 0;
+const sp = 100 - cp;
+
+document.getElementById('leg-clean-pct').textContent = cp + '% of total';
+document.getElementById('leg-stego-pct').textContent = sp + '% of total';
+document.getElementById('rc').style.width = cp + '%';
+document.getElementById('rs').style.width = sp + '%';
+document.getElementById('rc-lbl').textContent = cp + '% clean';
+document.getElementById('rs-lbl').textContent = sp + '% stego';
+const tl = document.getElementById('threat-level');
+tl.textContent = sp > 20 ? 'High' : sp > 10 ? 'Moderate' : 'Low';
+tl.style.color = sp > 20 ? 'var(--red)' : sp > 10 ? 'var(--amber)' : 'var(--accent)';
+
+new Chart(document.getElementById('myChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Clean', 'Stego'],
+    datasets: [{
+      data: [CLEAN, STEGO],
+      backgroundColor: ['#00e5a0', '#ff5252'],
+      borderColor: '#080b10',
+      borderWidth: 4,
+      hoverBorderWidth: 4,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '74%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0c1018',
+        borderColor: 'rgba(255,255,255,0.1)',
+        borderWidth: 1,
+        titleColor: '#eef0f5',
+        bodyColor: 'rgba(238,240,245,0.55)',
+        padding: 12,
+        callbacks: {
+          label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + ' (' + Math.round(ctx.parsed / TOTAL * 100) + '%)'
+        }
+      }
+    },
+    animation: { animateRotate: true, duration: 1000, easing: 'easeInOutQuart' }
+  },
+  plugins: [{
+    id: 'center',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, top, right, bottom } } = chart;
+      const cx = (left + right) / 2, cy = (top + bottom) / 2;
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '500 30px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#eef0f5';
+      ctx.fillText(TOTAL, cx, cy - 11);
+      ctx.font = '400 11px "Syne", sans-serif';
+      ctx.fillStyle = 'rgba(238,240,245,0.38)';
+      ctx.fillText('total scanned', cx, cy + 14);
+      ctx.restore();
+    }
+  }]
+});
+</script>
+{% endblock %}

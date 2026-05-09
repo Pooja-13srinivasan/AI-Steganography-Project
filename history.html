@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width:900px">
+
+  <!-- Page header -->
+  <div class="fade-up" style="margin-bottom:2rem">
+    <div class="mono" style="font-size:9px;letter-spacing:0.18em;color:rgba(0,229,160,0.5);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+      <span style="width:14px;height:1px;background:var(--accent);display:inline-block;opacity:.5"></span>
+      SCAN HISTORY
+    </div>
+    <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em">Recent <span style="color:var(--accent)">Scans</span></h1>
+  </div>
+
+  {% if scans %}
+  <div style="display:flex;flex-direction:column;gap:12px">
+    {% for scan in scans|reverse %}
+    <div class="glass fade-up" style="padding:1.25rem;display:grid;grid-template-columns:60px 1fr auto;gap:1rem;align-items:center">
+
+      <!-- Thumbnail -->
+      <img src="{{ url_for('static', filename=scan.image) }}"
+           style="width:60px;height:60px;object-fit:cover;border-radius:var(--r-sm);border:1px solid var(--border2)"
+           onerror="this.src='/static/placeholder.png'">
+
+      <!-- Info -->
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">{{ scan.filename }}</div>
+        <div style="font-size:12px;color:var(--text3)" class="mono">Confidence: {{ scan.confidence }}%</div>
+        {% if scan.message %}
+        <div style="font-size:11px;color:var(--red);margin-top:4px" class="mono">Payload detected</div>
+        {% endif %}
+      </div>
+
+      <!-- Verdict badge -->
+      <div>
+        {% if scan.result|lower == 'clean' %}
+          <span class="tag tag-green"><span class="tag-dot"></span>CLEAN</span>
+        {% else %}
+          <span class="tag tag-red"><span class="tag-dot"></span>STEGO</span>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="glass fade-up" style="padding:3rem;text-align:center">
+    <div style="font-size:15px;color:var(--text3);margin-bottom:1rem">No scans yet.</div>
+    <a href="/upload" class="btn btn-primary">Scan Your First Image</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

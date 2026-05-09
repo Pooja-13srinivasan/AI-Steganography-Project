@@ -1,0 +1,185 @@
+/* ===== GLOBAL STYLES ===== */
+
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#94b2ed,#243B55);
+    min-height:100vh;
+    color:white;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar{
+    background: rgba(0,0,0,0.7) !important;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand{
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+/* ===== CARDS ===== */
+
+.card{
+    background: rgba(255,255,255,0.08);
+    border:none;
+    border-radius:15px;
+    backdrop-filter: blur(15px);
+    color:white;
+}
+
+.card h5{
+    font-weight:500;
+}
+
+.shadow{
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* ===== BUTTONS ===== */
+
+.btn{
+    border-radius:10px;
+    transition:0.3s;
+}
+
+.btn-primary{
+    background:#007bff;
+    border:none;
+}
+
+.btn-success{
+    background:#28a745;
+    border:none;
+}
+
+.btn-danger{
+    background:#dc3545;
+    border:none;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* ===== FORM INPUT ===== */
+
+.form-control{
+    background: rgba(255,255,255,0.1);
+    border:none;
+    color:white;
+}
+
+.form-control::placeholder{
+    color:#ddd;
+}
+
+.form-control:focus{
+    background: rgba(255,255,255,0.15);
+    box-shadow:none;
+    border:1px solid #00c6ff;
+    color:white;
+}
+
+/* ===== HOME PAGE ===== */
+
+.display-4{
+    font-weight:700;
+}
+
+.lead{
+    color:#ddd;
+}
+
+/* ===== DASHBOARD CARDS ===== */
+
+.dashboard-card{
+    text-align:center;
+    padding:25px;
+    transition:0.3s;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-5px);
+}
+
+/* ===== IMAGE PREVIEW ===== */
+
+#preview{
+    border-radius:10px;
+    border:2px solid rgba(255,255,255,0.2);
+}
+
+/* ===== TABLE STYLING ===== */
+
+.table{
+    color:white;
+}
+
+.table thead{
+    background: rgba(255,255,255,0.1);
+}
+
+.table-striped tbody tr:nth-of-type(odd){
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== ALERT BOXES ===== */
+
+.alert{
+    border-radius:10px;
+}
+
+/* ===== UPLOAD BOX ===== */
+
+.upload-box{
+    border:2px dashed rgba(255,255,255,0.3);
+    padding:40px;
+    text-align:center;
+    border-radius:15px;
+    transition:0.3s;
+}
+
+.upload-box:hover{
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== IMAGE RESULT ===== */
+
+.result-img{
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.5);
+}
+
+/* ===== ADMIN PANEL ===== */
+
+.admin-table{
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#00c6ff;
+    border-radius:10px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width:768px){
+
+.display-4{
+    font-size:2rem;
+}
+
+.card{
+    margin-bottom:20px;
+}
+
+}
